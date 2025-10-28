@@ -1,0 +1,6 @@
+- [x] Project scaffolded with Next.js, Tailwind CSS, ESLint, App Router, and src directory using npm.
+- [ ] Customize the project according to Seagull Ltd requirements.
+- [ ] Install FontAwesome for React via npm.
+- [ ] Add README.md with project details.
+- [ ] Implement all required sections and design.
+- [ ] Ensure documentation is complete.
