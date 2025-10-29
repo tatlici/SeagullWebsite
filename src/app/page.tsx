@@ -2,7 +2,7 @@
 "use client";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope, faPhone, faUsers, faLightbulb, faHandshake, faMoon, faSun, faGlobe } from "@fortawesome/free-solid-svg-icons";
+import { faEnvelope, faUsers, faLightbulb, faHandshake, faMoon, faSun, faGlobe, faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 
 export default function Home() {
@@ -10,6 +10,8 @@ export default function Home() {
 
   // Dark theme toggle
   const [dark, setDark] = useState(false);
+  // Mobile menu toggle
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   // Language switcher
   type Lang = "en" | "tr" | "de";
   const [lang, setLang] = useState<Lang>("en");
@@ -146,12 +148,14 @@ export default function Home() {
       {/* Header - Sticky */}
       <header className="bg-[#0A2342] text-white flex items-center justify-between px-4 md:px-10 py-3 shadow-md sticky top-0 z-50">
         <div className="flex items-center gap-3 md:gap-6">
-          <div className="w-14 h-14 relative flex items-center justify-center">
+          <div className="w-12 h-12 md:w-14 md:h-14 relative flex items-center justify-center">
             <Image src="/seagull-logo.png" alt="Seagull Ltd Logo" width={56} height={56} className="rounded object-contain" />
           </div>
-          <span className="text-xl md:text-2xl font-semibold tracking-wide whitespace-nowrap">Seagull Ltd</span>
+          <span className="text-lg md:text-2xl font-semibold tracking-wide">Seagull Ltd</span>
         </div>
-        <nav className="flex gap-4 md:gap-8 items-center flex-1 justify-end">
+        
+        {/* Desktop Navigation */}
+        <nav className="hidden lg:flex gap-4 md:gap-8 items-center flex-1 justify-end">
           {[{ label: t[lang].about, href: "#about" },
             { label: t[lang].vision, href: "#vision" },
             { label: t[lang].clients, href: "#clients" },
@@ -169,7 +173,7 @@ export default function Home() {
               <span className="absolute left-0 -bottom-1 w-full h-0.5 bg-[#00B8D9] scale-x-0 hover:scale-x-100 transition-transform origin-left" />
             </a>
           ))}
-          {/* Dark theme toggle and language dropdown closer together */}
+          {/* Dark theme toggle and language dropdown */}
           <div className="flex items-center gap-2 ml-4">
             <button
               onClick={() => setDark(!dark)}
@@ -211,7 +215,68 @@ export default function Home() {
             </div>
           </div>
         </nav>
+
+        {/* Mobile Menu Button */}
+        <div className="lg:hidden flex items-center gap-3">
+          <button
+            onClick={() => setDark(!dark)}
+            className={`px-2 py-1 rounded-full border border-[#00B8D9] text-[#00B8D9] bg-transparent transition-colors duration-200 hover:bg-[#00B8D9] hover:text-white flex items-center justify-center`}
+            aria-label="Toggle dark mode"
+          >
+            <FontAwesomeIcon icon={dark ? faSun : faMoon} className="text-base" />
+          </button>
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="text-white text-2xl p-2"
+            aria-label="Toggle menu"
+          >
+            <FontAwesomeIcon icon={mobileMenuOpen ? faTimes : faBars} />
+          </button>
+        </div>
       </header>
+
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="lg:hidden bg-[#0A2342] text-white px-4 py-6 flex flex-col gap-4 shadow-lg z-40">
+          {[{ label: t[lang].about, href: "#about" },
+            { label: t[lang].vision, href: "#vision" },
+            { label: t[lang].clients, href: "#clients" },
+            { label: t[lang].contact, href: "#contact" }].map((item) => (
+            <a
+              key={item.label}
+              href={item.href}
+              onClick={(e) => {
+                e.preventDefault();
+                document.querySelector(item.href)?.scrollIntoView({ behavior: 'smooth' });
+                setMobileMenuOpen(false);
+              }}
+              className="font-semibold text-base py-2 hover:text-[#00B8D9] transition-colors"
+            >
+              {item.label}
+            </a>
+          ))}
+          <div className="flex gap-2 pt-4 border-t border-gray-600">
+            <button
+              className={`flex-1 px-4 py-2 rounded-full border ${lang === "en" ? "border-[#00B8D9] bg-[#00B8D9] text-white" : "border-gray-500 text-gray-300"}`}
+              onClick={() => { setLang("en"); setMobileMenuOpen(false); }}
+            >
+              🇬🇧 EN
+            </button>
+            <button
+              className={`flex-1 px-4 py-2 rounded-full border ${lang === "tr" ? "border-[#00B8D9] bg-[#00B8D9] text-white" : "border-gray-500 text-gray-300"}`}
+              onClick={() => { setLang("tr"); setMobileMenuOpen(false); }}
+            >
+              🇹🇷 TR
+            </button>
+            <button
+              className={`flex-1 px-4 py-2 rounded-full border ${lang === "de" ? "border-[#00B8D9] bg-[#00B8D9] text-white" : "border-gray-500 text-gray-300"}`}
+              onClick={() => { setLang("de"); setMobileMenuOpen(false); }}
+            >
+              🇩🇪 DE
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Banner Section (moved to top) */}
       <section className="w-full bg-white py-0 px-0" id="banner">
@@ -231,55 +296,55 @@ export default function Home() {
 
 
       {/* About Us */}
-  <section className={`${dark ? "bg-[#0D1B2A] text-white" : "bg-[#F8F9FA] text-black"} py-20 px-6`} id="about">
+  <section className={`${dark ? "bg-[#0D1B2A] text-white" : "bg-[#F8F9FA] text-black"} py-12 md:py-20 px-4 md:px-6`} id="about">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="flex flex-col items-center mb-8">
-            <h2 className={`text-4xl md:text-5xl font-bold mb-6 font-inter ${dark ? "text-white" : "text-[#0A2342]"}`}>{t[lang].about}</h2>
+          <div className="flex flex-col items-center mb-6 md:mb-8">
+            <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 font-inter ${dark ? "text-white" : "text-[#0A2342]"}`}>{t[lang].about}</h2>
           </div>
-          <p className={`text-xl md:text-2xl leading-relaxed ${dark ? "text-gray-100" : "text-gray-800"}`}>{t[lang].aboutDesc}</p>
+          <p className={`text-base md:text-xl lg:text-2xl leading-relaxed ${dark ? "text-gray-100" : "text-gray-800"}`}>{t[lang].aboutDesc}</p>
         </div>
       </section>
 
       {/* About visual between About and Vision */}
-      <section className={`${dark ? "bg-[#0D1B2A]" : "bg-[#F8F9FA]"} py-8 px-6`} id="about-visual">
-        <div className="w-full max-w-5xl h-96 md:h-[32rem] rounded-lg overflow-hidden shadow-lg flex items-center justify-center mx-auto">
+      <section className={`${dark ? "bg-[#0D1B2A]" : "bg-[#F8F9FA]"} py-6 md:py-8 px-4 md:px-6`} id="about-visual">
+        <div className="w-full max-w-5xl h-64 md:h-96 lg:h-[32rem] rounded-lg overflow-hidden shadow-lg flex items-center justify-center mx-auto">
           <Image src="/AboutUs.png" alt="About Seagull Ltd" width={1600} height={512} className="object-cover w-full h-full" />
         </div>
       </section>
 
       {/* Vision & Mission */}
-      <section className={`${dark ? "bg-[#0A2342] text-white" : "bg-white text-black"} py-16 px-6`} id="vision">
+      <section className={`${dark ? "bg-[#0A2342] text-white" : "bg-white text-black"} py-12 md:py-16 px-4 md:px-6`} id="vision">
         <div className="max-w-5xl mx-auto text-center md:text-left">
-          <div className="grid md:grid-cols-2 gap-8 items-start">
+          <div className="grid md:grid-cols-2 gap-6 md:gap-8 items-start">
             {/* Vision Card */}
-            <div className={`flex flex-col items-center md:items-start text-center md:text-left p-6 rounded-lg shadow-sm h-full ${dark ? "bg-[#0D1B2A]" : "bg-[#F8F9FA]"}`}>
-              <FontAwesomeIcon icon={faLightbulb} className="text-[#00B8D9] mb-4" style={{fontSize: '56px'}} />
-              <h3 className={`text-xl font-semibold mb-2 font-inter ${dark ? "text-white" : "text-[#0A2342]"}`}>{t[lang].visionTitle}</h3>
-              <p className={`leading-relaxed ${dark ? "text-gray-100" : "text-gray-800"}`}>{t[lang].visionDesc}</p>
+            <div className={`flex flex-col items-center md:items-start text-center md:text-left p-6 md:p-8 rounded-lg shadow-sm h-full ${dark ? "bg-[#0D1B2A]" : "bg-[#F8F9FA]"}`}>
+              <FontAwesomeIcon icon={faLightbulb} className="text-[#00B8D9] mb-4" style={{fontSize: '48px'}} />
+              <h3 className={`text-lg md:text-xl font-semibold mb-2 font-inter ${dark ? "text-white" : "text-[#0A2342]"}`}>{t[lang].visionTitle}</h3>
+              <p className={`leading-relaxed text-sm md:text-base ${dark ? "text-gray-100" : "text-gray-800"}`}>{t[lang].visionDesc}</p>
             </div>
             {/* Mission Card */}
-            <div className={`flex flex-col items-center md:items-start text-center md:text-left p-6 rounded-lg shadow-sm h-full ${dark ? "bg-[#0D1B2A]" : "bg-[#F8F9FA]"}`}>
-              <FontAwesomeIcon icon={faHandshake} className="text-[#00B8D9] mb-4" style={{fontSize: '56px'}} />
-              <h3 className={`text-xl font-semibold mb-2 font-inter ${dark ? "text-white" : "text-[#0A2342]"}`}>{t[lang].missionTitle}</h3>
-              <p className={`leading-relaxed ${dark ? "text-gray-100" : "text-gray-800"}`}>{t[lang].missionDesc}</p>
+            <div className={`flex flex-col items-center md:items-start text-center md:text-left p-6 md:p-8 rounded-lg shadow-sm h-full ${dark ? "bg-[#0D1B2A]" : "bg-[#F8F9FA]"}`}>
+              <FontAwesomeIcon icon={faHandshake} className="text-[#00B8D9] mb-4" style={{fontSize: '48px'}} />
+              <h3 className={`text-lg md:text-xl font-semibold mb-2 font-inter ${dark ? "text-white" : "text-[#0A2342]"}`}>{t[lang].missionTitle}</h3>
+              <p className={`leading-relaxed text-sm md:text-base ${dark ? "text-gray-100" : "text-gray-800"}`}>{t[lang].missionDesc}</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Our Clients */}
-      <section className={`${dark ? "bg-[#0D1B2A] text-white" : "bg-[#F8F9FA] text-black"} py-16 px-6`} id="clients">
+      <section className={`${dark ? "bg-[#0D1B2A] text-white" : "bg-[#F8F9FA] text-black"} py-12 md:py-16 px-4 md:px-6`} id="clients">
         <div className="max-w-5xl mx-auto text-center">
-          <FontAwesomeIcon icon={faUsers} className="text-[#00B8D9] text-5xl mb-6" />
-          <h2 className={`text-3xl font-semibold mb-4 font-inter ${dark ? "text-white" : "text-[#0A2342]"}`}>{t[lang].clients}</h2>
-          <p className={`text-lg mb-10 ${dark ? "text-gray-100" : "text-gray-800"}`}>{t[lang].clientsDesc}</p>
+          <FontAwesomeIcon icon={faUsers} className="text-[#00B8D9] text-4xl md:text-5xl mb-4 md:mb-6" />
+          <h2 className={`text-2xl md:text-3xl font-semibold mb-3 md:mb-4 font-inter ${dark ? "text-white" : "text-[#0A2342]"}`}>{t[lang].clients}</h2>
+          <p className={`text-base md:text-lg mb-8 md:mb-10 ${dark ? "text-gray-100" : "text-gray-800"}`}>{t[lang].clientsDesc}</p>
 
           {/* Client Logos - Card Style */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-            <div className="bg-white dark:bg-[#0A2342] rounded-lg shadow-lg p-8 flex items-center justify-center hover:shadow-xl transition-shadow duration-300">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-3xl mx-auto">
+            <div className={`${dark ? "bg-[#0A2342]" : "bg-white"} rounded-lg shadow-lg p-6 md:p-8 flex items-center justify-center hover:shadow-xl transition-shadow duration-300`}>
               <ClientLogo png="/clients/sehir-hatlari.png" svg="/clients/sehir-hatlari.svg" alt="Şehir Hatları logo" />
             </div>
-            <div className="bg-white dark:bg-[#0A2342] rounded-lg shadow-lg p-8 flex items-center justify-center hover:shadow-xl transition-shadow duration-300">
+            <div className={`${dark ? "bg-[#0A2342]" : "bg-white"} rounded-lg shadow-lg p-6 md:p-8 flex items-center justify-center hover:shadow-xl transition-shadow duration-300`}>
               <ClientLogo png="/clients/istac.png" svg="/clients/istac.svg" alt="İSTAÇ logo" />
             </div>
           </div>
@@ -288,67 +353,63 @@ export default function Home() {
       </section>
 
       {/* ISO Certificate Section (immediately after Clients) */}
-      <section className={`${dark ? "bg-[#0A2342] text-white" : "bg-white text-black"} py-16 px-6`} id="iso-certificate">
-        <div className="max-w-3xl mx-auto text-center flex flex-col items-center gap-6">
-          <h2 className={`text-3xl font-semibold mb-4 font-inter ${dark ? "text-white" : "text-[#0A2342]"}`}>{t[lang].isoTitle}</h2>
-          <p className={`text-lg mb-4 max-w-xl mx-auto ${dark ? "text-gray-100" : "text-gray-800"}`}>
+      <section className={`${dark ? "bg-[#0A2342] text-white" : "bg-white text-black"} py-12 md:py-16 px-4 md:px-6`} id="iso-certificate">
+        <div className="max-w-3xl mx-auto text-center flex flex-col items-center gap-4 md:gap-6">
+          <h2 className={`text-2xl md:text-3xl font-semibold mb-2 md:mb-4 font-inter ${dark ? "text-white" : "text-[#0A2342]"}`}>{t[lang].isoTitle}</h2>
+          <p className={`text-sm md:text-lg mb-3 md:mb-4 max-w-xl mx-auto px-2 ${dark ? "text-gray-100" : "text-gray-800"}`}>
             {t[lang].isoDesc}
           </p>
-          <a href="/seagull-iso.pdf" target="_blank" rel="noopener noreferrer" className="inline-block bg-[#205B97] text-white font-semibold px-6 py-2 rounded-full shadow hover:bg-[#4CA0E8] transition-colors duration-200">
+          <a href="/seagull-iso.pdf" target="_blank" rel="noopener noreferrer" className="inline-block bg-[#205B97] text-white font-semibold px-5 md:px-6 py-2 rounded-full shadow hover:bg-[#4CA0E8] transition-colors duration-200 text-sm md:text-base">
             {t[lang].isoButton}
           </a>
         </div>
       </section>
 
       {/* Contact Information & Form */}
-  <section className={`${dark ? "bg-[#0D1B2A] text-white" : "bg-[#F8F9FA] text-black"} py-16 px-6`} id="contact">
-    <div className="max-w-5xl mx-auto grid md:grid-cols-5 gap-12 items-start">
+  <section className={`${dark ? "bg-[#0D1B2A] text-white" : "bg-[#F8F9FA] text-black"} py-12 md:py-16 px-4 md:px-6`} id="contact">
+    <div className="max-w-5xl mx-auto grid md:grid-cols-5 gap-8 md:gap-12 items-start">
       <div className="md:col-span-2 text-center md:text-left flex flex-col justify-center">
-        <h2 className={`text-3xl font-semibold mb-4 font-inter ${dark ? "text-white" : "text-[#0A2342]"}`}>{t[lang].contactInfo}</h2>
+        <h2 className={`text-2xl md:text-3xl font-semibold mb-4 md:mb-6 font-inter ${dark ? "text-white" : "text-[#0A2342]"}`}>{t[lang].contactInfo}</h2>
         <div className={`flex flex-col gap-4 ${dark ? "text-gray-100" : "text-[#0A2342]"}`}>
-          <div className="flex items-start gap-3">
-            <FontAwesomeIcon icon={faEnvelope} className={`text-2xl mt-1 ${dark ? "text-[#00B8D9]" : "text-[#205B97]"}`} />
-            <span>info@seagull-ltd.com</span>
+          <div className="flex items-start gap-3 justify-center md:justify-start">
+            <FontAwesomeIcon icon={faEnvelope} className={`text-xl md:text-2xl mt-1 ${dark ? "text-[#00B8D9]" : "text-[#205B97]"}`} />
+            <span className="text-sm md:text-base">info@seagull-ltd.com</span>
           </div>
-          <div className="flex items-start gap-3">
-            <FontAwesomeIcon icon={faPhone} className={`text-2xl mt-1 ${dark ? "text-[#00B8D9]" : "text-[#205B97]"}`} />
-            <span>+90 212 123 4567</span>
-          </div>
-          <div className="flex items-start gap-3">
-            <FontAwesomeIcon icon={faHandshake} className={`text-2xl mt-1 ${dark ? "text-[#00B8D9]" : "text-[#205B97]"}`} />
+          <div className="flex items-start gap-3 justify-center md:justify-start">
+            <FontAwesomeIcon icon={faHandshake} className={`text-xl md:text-2xl mt-1 flex-shrink-0 ${dark ? "text-[#00B8D9]" : "text-[#205B97]"}`} />
             <div>
-              <p className="font-semibold mb-1">{t[lang].address}</p>
-              <p className="text-sm">Esenyalı Mah. Yanyol Cad. Varyap Plaza No: 61 İç Kapı No: 247 Pendik/İstanbul</p>
+              <p className="font-semibold mb-1 text-sm md:text-base">{t[lang].address}</p>
+              <p className="text-xs md:text-sm">Esenyalı Mah. Yanyol Cad. Varyap Plaza No: 61 İç Kapı No: 247 Pendik/İstanbul</p>
             </div>
           </div>
         </div>
       </div>
-      <form className={`md:col-span-3 p-10 rounded-lg shadow-md flex flex-col gap-6 min-w-0 border-2 ${dark ? "bg-[#0A2342] border-[#00B8D9]" : "bg-white border-[#205B97]"}`} method="POST" action="mailto:info@seagull-ltd.com" encType="text/plain">
-        <h3 className={`text-xl font-semibold mb-2 font-inter ${dark ? "text-white" : "text-[#205B97]"}`}>{t[lang].contactUs}</h3>
-              <input type="text" name="name" placeholder={t[lang].name} required className={`border rounded px-4 py-2 focus:outline-none focus:border-[#4CA0E8] font-helvetica uppercase ${dark ? "border-[#00B8D9] text-white bg-[#0D1B2A]" : "border-[#205B97] text-[#205B97] bg-white"}`} />
-              <input type="email" name="email" placeholder={t[lang].email} required className={`border rounded px-4 py-2 focus:outline-none focus:border-[#4CA0E8] font-helvetica uppercase ${dark ? "border-[#00B8D9] text-white bg-[#0D1B2A]" : "border-[#205B97] text-[#205B97] bg-white"}`} />
-              <textarea name="message" placeholder={t[lang].message} required className={`border rounded px-4 py-2 focus:outline-none focus:border-[#4CA0E8] font-helvetica uppercase ${dark ? "border-[#00B8D9] text-white bg-[#0D1B2A]" : "border-[#205B97] text-[#205B97] bg-white"}`} rows={4} />
-        <button type="submit" className={`font-semibold px-6 py-2 rounded-full transition-colors duration-200 ${dark ? "bg-[#4CA0E8] text-[#0A2342] hover:bg-white hover:text-[#205B97]" : "bg-[#205B97] text-white hover:bg-[#4CA0E8] hover:text-[#205B97]"}`}>{t[lang].send}</button>
+      <form className={`md:col-span-3 p-6 md:p-10 rounded-lg shadow-md flex flex-col gap-4 md:gap-6 min-w-0 border-2 ${dark ? "bg-[#0A2342] border-[#00B8D9]" : "bg-white border-[#205B97]"}`} method="POST" action="mailto:info@seagull-ltd.com" encType="text/plain">
+        <h3 className={`text-lg md:text-xl font-semibold mb-2 font-inter ${dark ? "text-white" : "text-[#205B97]"}`}>{t[lang].contactUs}</h3>
+              <input type="text" name="name" placeholder={t[lang].name} required className={`border rounded px-3 md:px-4 py-2 focus:outline-none focus:border-[#4CA0E8] font-helvetica uppercase text-sm md:text-base ${dark ? "border-[#00B8D9] text-white bg-[#0D1B2A]" : "border-[#205B97] text-[#205B97] bg-white"}`} />
+              <input type="email" name="email" placeholder={t[lang].email} required className={`border rounded px-3 md:px-4 py-2 focus:outline-none focus:border-[#4CA0E8] font-helvetica uppercase text-sm md:text-base ${dark ? "border-[#00B8D9] text-white bg-[#0D1B2A]" : "border-[#205B97] text-[#205B97] bg-white"}`} />
+              <textarea name="message" placeholder={t[lang].message} required className={`border rounded px-3 md:px-4 py-2 focus:outline-none focus:border-[#4CA0E8] font-helvetica uppercase text-sm md:text-base ${dark ? "border-[#00B8D9] text-white bg-[#0D1B2A]" : "border-[#205B97] text-[#205B97] bg-white"}`} rows={4} />
+        <button type="submit" className={`font-semibold px-5 md:px-6 py-2 rounded-full transition-colors duration-200 text-sm md:text-base ${dark ? "bg-[#4CA0E8] text-[#0A2342] hover:bg-white hover:text-[#205B97]" : "bg-[#205B97] text-white hover:bg-[#4CA0E8] hover:text-[#205B97]"}`}>{t[lang].send}</button>
       </form>
     </div>
   </section>
 
       {/* Footer */}
-  <footer className={`py-8 mt-auto ${dark ? "bg-[#0A2342] text-white" : "bg-[#205B97] text-white"}`}>
-        <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row items-center md:items-center justify-between gap-4">
+  <footer className={`py-6 md:py-8 mt-auto ${dark ? "bg-[#0A2342] text-white" : "bg-[#205B97] text-white"}`}>
+        <div className="max-w-5xl mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center md:items-center justify-between gap-4">
           {/* Left-aligned logo */}
-          <div className="self-start md:self-auto">
-            <Image src="/seagull-logo.png" alt="Seagull Ltd Logo" width={48} height={48} className="rounded object-contain" />
+          <div className="self-center md:self-auto">
+            <Image src="/seagull-logo.png" alt="Seagull Ltd Logo" width={40} height={40} className="rounded object-contain md:w-12 md:h-12" />
           </div>
           {/* Links */}
-          <div className="flex justify-center gap-6 order-last md:order-none">
+          <div className="flex flex-wrap justify-center gap-4 md:gap-6 order-last md:order-none text-sm md:text-base">
             <a href="#about" onClick={(e) => { e.preventDefault(); document.querySelector('#about')?.scrollIntoView({ behavior: 'smooth' }); }} className="hover:text-[#00B8D9] transition-colors">{t[lang].about}</a>
             <a href="#vision" onClick={(e) => { e.preventDefault(); document.querySelector('#vision')?.scrollIntoView({ behavior: 'smooth' }); }} className="hover:text-[#00B8D9] transition-colors">{t[lang].vision}</a>
             <a href="#clients" onClick={(e) => { e.preventDefault(); document.querySelector('#clients')?.scrollIntoView({ behavior: 'smooth' }); }} className="hover:text-[#00B8D9] transition-colors">{t[lang].clients}</a>
             <a href="#contact" onClick={(e) => { e.preventDefault(); document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' }); }} className="hover:text-[#00B8D9] transition-colors">{t[lang].contact}</a>
           </div>
           {/* Smaller powered-by text with link */}
-          <div className="text-sm font-normal opacity-90">
+          <div className="text-xs md:text-sm font-normal opacity-90">
             <a href="https://www.simplecodelabs.com/" target="_blank" rel="noopener noreferrer" className="hover:text-[#00B8D9] transition-colors">
               {t[lang].powered}
             </a>
