@@ -5,7 +5,7 @@ echo "🚀 Deploying Seagull Ltd website to seagull-ltd.com..."
 
 # Navigate to project
 echo "📂 Step 1: Navigating to project directory..."
-cd /root/SeagullWebsite || {
+cd /www/wwwroot/seagull-ltd.com || {
   echo "❌ Failed to navigate to project directory"
   exit 1
 }
