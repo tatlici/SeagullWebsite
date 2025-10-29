@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import CookieConsentWrapper from "@/components/CookieConsentWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -60,7 +61,13 @@ export const metadata: Metadata = {
     images: ["/Slider1.png"],
   },
   icons: {
-    icon: [{ url: "/favicon.ico" }],
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/seagull-logo.png", sizes: "192x192", type: "image/png" },
+    ],
+    apple: [
+      { url: "/seagull-logo.png", sizes: "180x180", type: "image/png" },
+    ],
   },
   robots: {
     index: true,
@@ -80,7 +87,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/seagull-logo.png" type="image/png" sizes="192x192" />
+        <link rel="apple-touch-icon" href="/seagull-logo.png" sizes="180x180" />
         {/* JSON-LD Organization schema for basic SEO */}
         <script
           type="application/ld+json"
@@ -100,6 +109,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
+        <CookieConsentWrapper />
       </body>
     </html>
   );

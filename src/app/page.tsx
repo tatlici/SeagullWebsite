@@ -4,7 +4,6 @@ import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faPhone, faUsers, faLightbulb, faHandshake, faMoon, faSun, faGlobe } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import CookieConsent from "@/components/CookieConsent";
 
 export default function Home() {
   // (Slider removed)
@@ -216,13 +215,14 @@ export default function Home() {
 
       {/* Banner Section (moved to top) */}
       <section className="w-full bg-white py-0 px-0" id="banner">
-        <div className="w-full h-96 md:h-[36rem] relative overflow-hidden flex items-center justify-center bg-white">
+        <div className="w-full relative flex items-center justify-center bg-white">
           <Image 
             src="/Slider1.png" 
             alt="Seagull Ltd Banner" 
-            fill 
+            width={1920}
+            height={1080}
             priority 
-            className="object-cover w-full h-full" 
+            className="object-contain w-full h-auto" 
             style={{ filter: 'brightness(1.1) contrast(1.05)' }}
           />
         </div>
@@ -234,9 +234,9 @@ export default function Home() {
   <section className={`${dark ? "bg-[#0D1B2A] text-white" : "bg-[#F8F9FA] text-black"} py-20 px-6`} id="about">
         <div className="max-w-4xl mx-auto text-center">
           <div className="flex flex-col items-center mb-8">
-            <h2 className="text-4xl md:text-5xl font-bold text-[#0A2342] dark:text-white mb-6 font-inter">{t[lang].about}</h2>
+            <h2 className={`text-4xl md:text-5xl font-bold mb-6 font-inter ${dark ? "text-white" : "text-[#0A2342]"}`}>{t[lang].about}</h2>
           </div>
-          <p className="text-gray-800 dark:text-gray-100 text-xl md:text-2xl leading-relaxed">{t[lang].aboutDesc}</p>
+          <p className={`text-xl md:text-2xl leading-relaxed ${dark ? "text-gray-100" : "text-gray-800"}`}>{t[lang].aboutDesc}</p>
         </div>
       </section>
 
@@ -252,16 +252,16 @@ export default function Home() {
         <div className="max-w-5xl mx-auto text-center md:text-left">
           <div className="grid md:grid-cols-2 gap-8 items-start">
             {/* Vision Card */}
-            <div className="flex flex-col items-center md:items-start text-center md:text-left p-6 rounded-lg bg-[#F8F9FA] dark:bg-[#0D1B2A] shadow-sm h-full">
+            <div className={`flex flex-col items-center md:items-start text-center md:text-left p-6 rounded-lg shadow-sm h-full ${dark ? "bg-[#0D1B2A]" : "bg-[#F8F9FA]"}`}>
               <FontAwesomeIcon icon={faLightbulb} className="text-[#00B8D9] mb-4" style={{fontSize: '56px'}} />
-              <h3 className="text-xl font-semibold text-[#0A2342] dark:text-white mb-2 font-inter">{t[lang].visionTitle}</h3>
-              <p className="text-gray-800 dark:text-gray-100 leading-relaxed">{t[lang].visionDesc}</p>
+              <h3 className={`text-xl font-semibold mb-2 font-inter ${dark ? "text-white" : "text-[#0A2342]"}`}>{t[lang].visionTitle}</h3>
+              <p className={`leading-relaxed ${dark ? "text-gray-100" : "text-gray-800"}`}>{t[lang].visionDesc}</p>
             </div>
             {/* Mission Card */}
-            <div className="flex flex-col items-center md:items-start text-center md:text-left p-6 rounded-lg bg-[#F8F9FA] dark:bg-[#0D1B2A] shadow-sm h-full">
+            <div className={`flex flex-col items-center md:items-start text-center md:text-left p-6 rounded-lg shadow-sm h-full ${dark ? "bg-[#0D1B2A]" : "bg-[#F8F9FA]"}`}>
               <FontAwesomeIcon icon={faHandshake} className="text-[#00B8D9] mb-4" style={{fontSize: '56px'}} />
-              <h3 className="text-xl font-semibold text-[#0A2342] dark:text-white mb-2 font-inter">{t[lang].missionTitle}</h3>
-              <p className="text-gray-800 dark:text-gray-100 leading-relaxed">{t[lang].missionDesc}</p>
+              <h3 className={`text-xl font-semibold mb-2 font-inter ${dark ? "text-white" : "text-[#0A2342]"}`}>{t[lang].missionTitle}</h3>
+              <p className={`leading-relaxed ${dark ? "text-gray-100" : "text-gray-800"}`}>{t[lang].missionDesc}</p>
             </div>
           </div>
         </div>
@@ -271,8 +271,8 @@ export default function Home() {
       <section className={`${dark ? "bg-[#0D1B2A] text-white" : "bg-[#F8F9FA] text-black"} py-16 px-6`} id="clients">
         <div className="max-w-5xl mx-auto text-center">
           <FontAwesomeIcon icon={faUsers} className="text-[#00B8D9] text-5xl mb-6" />
-          <h2 className="text-3xl font-semibold mb-4 font-inter text-[#0A2342] dark:text-white">{t[lang].clients}</h2>
-          <p className="text-lg mb-10 text-gray-800 dark:text-gray-100">{t[lang].clientsDesc}</p>
+          <h2 className={`text-3xl font-semibold mb-4 font-inter ${dark ? "text-white" : "text-[#0A2342]"}`}>{t[lang].clients}</h2>
+          <p className={`text-lg mb-10 ${dark ? "text-gray-100" : "text-gray-800"}`}>{t[lang].clientsDesc}</p>
 
           {/* Client Logos - Card Style */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
@@ -290,8 +290,8 @@ export default function Home() {
       {/* ISO Certificate Section (immediately after Clients) */}
       <section className={`${dark ? "bg-[#0A2342] text-white" : "bg-white text-black"} py-16 px-6`} id="iso-certificate">
         <div className="max-w-3xl mx-auto text-center flex flex-col items-center gap-6">
-          <h2 className="text-3xl font-semibold mb-4 font-inter text-[#0A2342] dark:text-white">{t[lang].isoTitle}</h2>
-          <p className="text-lg mb-4 max-w-xl mx-auto text-gray-800 dark:text-gray-100">
+          <h2 className={`text-3xl font-semibold mb-4 font-inter ${dark ? "text-white" : "text-[#0A2342]"}`}>{t[lang].isoTitle}</h2>
+          <p className={`text-lg mb-4 max-w-xl mx-auto ${dark ? "text-gray-100" : "text-gray-800"}`}>
             {t[lang].isoDesc}
           </p>
           <a href="/seagull-iso.pdf" target="_blank" rel="noopener noreferrer" className="inline-block bg-[#205B97] text-white font-semibold px-6 py-2 rounded-full shadow hover:bg-[#4CA0E8] transition-colors duration-200">
@@ -304,18 +304,18 @@ export default function Home() {
   <section className={`${dark ? "bg-[#0D1B2A] text-white" : "bg-[#F8F9FA] text-black"} py-16 px-6`} id="contact">
     <div className="max-w-5xl mx-auto grid md:grid-cols-5 gap-12 items-start">
       <div className="md:col-span-2 text-center md:text-left flex flex-col justify-center">
-        <h2 className="text-3xl font-semibold mb-4 font-inter text-[#0A2342] dark:text-white">{t[lang].contactInfo}</h2>
-        <div className="flex flex-col gap-4 text-[#0A2342] dark:text-gray-100">
+        <h2 className={`text-3xl font-semibold mb-4 font-inter ${dark ? "text-white" : "text-[#0A2342]"}`}>{t[lang].contactInfo}</h2>
+        <div className={`flex flex-col gap-4 ${dark ? "text-gray-100" : "text-[#0A2342]"}`}>
           <div className="flex items-start gap-3">
-            <FontAwesomeIcon icon={faEnvelope} className="text-[#205B97] dark:text-[#00B8D9] text-2xl mt-1" />
+            <FontAwesomeIcon icon={faEnvelope} className={`text-2xl mt-1 ${dark ? "text-[#00B8D9]" : "text-[#205B97]"}`} />
             <span>info@seagull-ltd.com</span>
           </div>
           <div className="flex items-start gap-3">
-            <FontAwesomeIcon icon={faPhone} className="text-[#205B97] dark:text-[#00B8D9] text-2xl mt-1" />
+            <FontAwesomeIcon icon={faPhone} className={`text-2xl mt-1 ${dark ? "text-[#00B8D9]" : "text-[#205B97]"}`} />
             <span>+90 212 123 4567</span>
           </div>
           <div className="flex items-start gap-3">
-            <FontAwesomeIcon icon={faHandshake} className="text-[#205B97] dark:text-[#00B8D9] text-2xl mt-1" />
+            <FontAwesomeIcon icon={faHandshake} className={`text-2xl mt-1 ${dark ? "text-[#00B8D9]" : "text-[#205B97]"}`} />
             <div>
               <p className="font-semibold mb-1">{t[lang].address}</p>
               <p className="text-sm">Esenyalı Mah. Yanyol Cad. Varyap Plaza No: 61 İç Kapı No: 247 Pendik/İstanbul</p>
@@ -323,11 +323,11 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <form className="md:col-span-3 bg-white dark:bg-[#0A2342] p-10 rounded-lg shadow-md flex flex-col gap-6 min-w-0 border-2 border-[#205B97] dark:border-[#00B8D9]" method="POST" action="mailto:info@seagull-ltd.com" encType="text/plain">
-        <h3 className="text-xl font-semibold mb-2 font-inter text-[#205B97] dark:text-white">{t[lang].contactUs}</h3>
-              <input type="text" name="name" placeholder={t[lang].name} required className="border border-[#205B97] dark:border-[#00B8D9] rounded px-4 py-2 focus:outline-none focus:border-[#4CA0E8] font-helvetica uppercase text-[#205B97] dark:text-white bg-white dark:bg-[#0D1B2A]" />
-              <input type="email" name="email" placeholder={t[lang].email} required className="border border-[#205B97] dark:border-[#00B8D9] rounded px-4 py-2 focus:outline-none focus:border-[#4CA0E8] font-helvetica uppercase text-[#205B97] dark:text-white bg-white dark:bg-[#0D1B2A]" />
-              <textarea name="message" placeholder={t[lang].message} required className="border border-[#205B97] dark:border-[#00B8D9] rounded px-4 py-2 focus:outline-none focus:border-[#4CA0E8] font-helvetica uppercase text-[#205B97] dark:text-white bg-white dark:bg-[#0D1B2A]" rows={4} />
+      <form className={`md:col-span-3 p-10 rounded-lg shadow-md flex flex-col gap-6 min-w-0 border-2 ${dark ? "bg-[#0A2342] border-[#00B8D9]" : "bg-white border-[#205B97]"}`} method="POST" action="mailto:info@seagull-ltd.com" encType="text/plain">
+        <h3 className={`text-xl font-semibold mb-2 font-inter ${dark ? "text-white" : "text-[#205B97]"}`}>{t[lang].contactUs}</h3>
+              <input type="text" name="name" placeholder={t[lang].name} required className={`border rounded px-4 py-2 focus:outline-none focus:border-[#4CA0E8] font-helvetica uppercase ${dark ? "border-[#00B8D9] text-white bg-[#0D1B2A]" : "border-[#205B97] text-[#205B97] bg-white"}`} />
+              <input type="email" name="email" placeholder={t[lang].email} required className={`border rounded px-4 py-2 focus:outline-none focus:border-[#4CA0E8] font-helvetica uppercase ${dark ? "border-[#00B8D9] text-white bg-[#0D1B2A]" : "border-[#205B97] text-[#205B97] bg-white"}`} />
+              <textarea name="message" placeholder={t[lang].message} required className={`border rounded px-4 py-2 focus:outline-none focus:border-[#4CA0E8] font-helvetica uppercase ${dark ? "border-[#00B8D9] text-white bg-[#0D1B2A]" : "border-[#205B97] text-[#205B97] bg-white"}`} rows={4} />
         <button type="submit" className={`font-semibold px-6 py-2 rounded-full transition-colors duration-200 ${dark ? "bg-[#4CA0E8] text-[#0A2342] hover:bg-white hover:text-[#205B97]" : "bg-[#205B97] text-white hover:bg-[#4CA0E8] hover:text-[#205B97]"}`}>{t[lang].send}</button>
       </form>
     </div>
@@ -355,9 +355,6 @@ export default function Home() {
           </div>
         </div>
       </footer>
-      
-      {/* Cookie Consent Popup */}
-      <CookieConsent />
     </div>
   );
 }
