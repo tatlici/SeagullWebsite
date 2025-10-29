@@ -35,9 +35,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://seagull-ltd.com",
     languages: {
-      en: "https://seagull-ltd.com",
-      tr: "https://seagull-ltd.com",
-      de: "https://seagull-ltd.com",
+      "en-US": "https://seagull-ltd.com",
+      "tr-TR": "https://seagull-ltd.com",
+      "de-DE": "https://seagull-ltd.com",
     },
   },
   openGraph: {
